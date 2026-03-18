@@ -1,0 +1,17 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a0533 0%, #2d1b69 30%, #1e3a5f 60%, #0d2137 100%);
+    background-attachment: fixed;
+}
+
+.App {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}

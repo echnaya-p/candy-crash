@@ -1,12 +1,9 @@
-import {Grid} from "@mui/material";
 import {checkCombos} from "../helpers/checkCombos";
 import {useCallback, useEffect, useState} from "react";
 import {generateCandies, swapColors} from "../helpers/utils";
 import {updateCandies} from "../helpers/updatedCandies";
-
-const boardStyle = {display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'};
-const gridStyle = {width: 400};
-const CELL_SIZE = '50px';
+import {CANDY_CONFIG} from "../helpers/constants";
+import './Board.css';
 
 function Board() {
     const [candies, setCandies] = useState(generateCandies());
@@ -69,23 +66,25 @@ function Board() {
     }, [candies, isCheck]);
 
     return (
-        <div style={boardStyle}>
-           <Grid container columns={8} style={gridStyle}>
-               {candies.map((color, index) => (
-                   <Grid item
-                         key={index}
-                         style={{
-                             width: CELL_SIZE,
-                             height: CELL_SIZE,
-                             backgroundColor: color,
-                             border: `1px solid ${isSelectedItem(index) ? 'white' : 'gray'}`
-                         }}
-                         onClick={() => handleClick(index)}
-                   >
-                       {index}
-                   </Grid>
-               ))}
-           </Grid>
+        <div className="board-wrapper">
+            <div className="board-title">Candy Crash</div>
+            <div className="board-grid">
+                {candies.map((color, index) => {
+                    const config = CANDY_CONFIG[color] || CANDY_CONFIG.white;
+                    const isEmpty = color === 'white';
+
+                    return (
+                        <div
+                            key={index}
+                            className={`candy-cell${isSelectedItem(index) ? ' selected' : ''}${isEmpty ? ' empty' : ''}`}
+                            style={{background: config.bg}}
+                            onClick={() => handleClick(index)}
+                        >
+                            {config.emoji}
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 }
