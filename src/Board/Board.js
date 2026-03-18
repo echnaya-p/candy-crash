@@ -12,6 +12,7 @@ function Board() {
     const [secondElementForSwap, setSecondElementForSwap] = useState(null);
     const [lastSwap, setLastSwap] = useState(null);
     const [shakeIndices, setShakeIndices] = useState([]);
+    const [score, setScore] = useState(0);
 
     const handleCheck = useCallback(() => {
         const combo = checkCombos(candies);
@@ -20,6 +21,7 @@ function Board() {
            const showWhiteCandies = candies.map((candy, index) => combo.includes(index) ? 'white' : candy);
 
            setCandies(showWhiteCandies);
+           setScore(prev => prev + combo.length);
            setIsCheck(true);
            setLastSwap(null);
         } else if (lastSwap) {
@@ -78,6 +80,7 @@ function Board() {
     return (
         <div className="board-wrapper">
             <div className="board-title">Candy Crash</div>
+            <div className="board-score">Score: {score}</div>
             <div className="board-grid">
                 {candies.map((color, index) => {
                     const config = CANDY_CONFIG[color] || CANDY_CONFIG.white;
