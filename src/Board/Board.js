@@ -38,6 +38,10 @@ function Board({ isMuted }) {
     }, [candies, lastSwap, isMuted]);
 
     const handleClick = (id) => {
+        if (firstElementForSwap === id) {
+            setFirstElementForSwap(null);
+            return;
+        }
         if (!isMuted) playClick();
         if (firstElementForSwap !== null) {
             setSecondElementForSwap(id);
