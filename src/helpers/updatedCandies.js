@@ -7,9 +7,9 @@ export function updateCandies(candies) {
 
    for (let i = SIZE_BOARD * SIZE_BOARD - 1; i >= 0; i--) {
        if (copy[i] === 'white') {
-           const [color, updateCandies] = updateCandy(i, copy)
+           const [color, updatedCopy] = updateCandy(i, copy);
            updatedCandies.unshift(color);
-           copy = updateCandies;
+           copy = updatedCopy;
        } else {
            updatedCandies.unshift(copy[i]);
        }

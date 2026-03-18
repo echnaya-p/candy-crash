@@ -9,13 +9,7 @@ export function generateCandy() {
 }
 
 export function generateCandies() {
-    const candies = [];
-
-    for (let i = 0; i < SIZE_BOARD * SIZE_BOARD; i++) {
-        candies.push(generateCandy());
-    }
-
-    return candies;
+    return Array.from({length: SIZE_BOARD * SIZE_BOARD}, () => generateCandy());
 }
 
 export function updateCandy(index, candies) {
@@ -33,10 +27,9 @@ export function updateCandy(index, candies) {
 }
 
 export function swapColors(colors, index1, index2) {
-    const tempColors = colors
-    const temp = colors[index1];
-    colors[index1] = colors[index2];
-    colors[index2] = temp;
+    const result = [...colors];
+    result[index1] = colors[index2];
+    result[index2] = colors[index1];
 
-    return tempColors
+    return result;
 }

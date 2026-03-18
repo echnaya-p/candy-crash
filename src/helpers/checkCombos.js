@@ -9,7 +9,7 @@ function horizontalCheck(candies) {
             return;
         }
 
-        if ((candies[i] === candies[i + 1]) && (candies[i] === candies[i + 2])) {
+        if (candies[i] !== 'white' && (candies[i] === candies[i + 1]) && (candies[i] === candies[i + 2])) {
             combo.push(i, i + 1, i + 2);
         }
     }
@@ -25,7 +25,7 @@ function verticalCheck(candies) {
     const combo = [];
 
     const checkColumn = (i) => {
-        if ((candies[i] === candies[i + SIZE_BOARD]) && (candies[i] === candies[i + 2 * SIZE_BOARD])) {
+        if (candies[i] !== 'white' && (candies[i] === candies[i + SIZE_BOARD]) && (candies[i] === candies[i + 2 * SIZE_BOARD])) {
             combo.push(i, i + SIZE_BOARD, i + 2 * SIZE_BOARD);
         }
     }
@@ -39,7 +39,7 @@ function verticalCheck(candies) {
 
 
 export function checkCombos(candies) {
-    const candiesWithoutCombo = new Set([...horizontalCheck(candies), ...verticalCheck(candies)]);
+    const comboIndices = new Set([...horizontalCheck(candies), ...verticalCheck(candies)]);
 
-    return Array.from(candiesWithoutCombo);
+    return Array.from(comboIndices);
 }
