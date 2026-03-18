@@ -3,9 +3,10 @@ import {useCallback, useEffect, useState} from "react";
 import {generateCandies, swapColors} from "../helpers/utils";
 import {updateCandies} from "../helpers/updatedCandies";
 import {CANDY_CONFIG} from "../helpers/constants";
+import {playClick, playCombo, playError} from "../helpers/sounds";
 import './Board.css';
 
-function Board() {
+function Board({ isMuted }) {
     const [candies, setCandies] = useState(generateCandies());
     const [isCheck, setIsCheck] = useState(false);
     const [firstElementForSwap, setFirstElementForSwap] = useState(null);
@@ -24,7 +25,9 @@ function Board() {
            setScore(prev => prev + combo.length);
            setIsCheck(true);
            setLastSwap(null);
+           if (!isMuted) playCombo();
         } else if (lastSwap) {
+           if (!isMuted) playError();
            setShakeIndices([lastSwap[0], lastSwap[1]]);
            setTimeout(() => {
                setCandies(swapColors(candies, lastSwap[0], lastSwap[1]));
@@ -32,9 +35,10 @@ function Board() {
                setLastSwap(null);
            }, 400);
         }
-    }, [candies, lastSwap]);
+    }, [candies, lastSwap, isMuted]);
 
     const handleClick = (id) => {
+        if (!isMuted) playClick();
         if (firstElementForSwap !== null) {
             setSecondElementForSwap(id);
         } else {

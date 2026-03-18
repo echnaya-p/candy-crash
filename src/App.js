@@ -4,6 +4,7 @@ import './App.css';
 
 function App() {
   const [theme, setTheme] = useState('dark');
+  const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -15,10 +16,15 @@ function App() {
 
   return (
     <div className="App">
-      <button className="theme-toggle" onClick={toggleTheme}>
-        {theme === 'dark' ? '☀️' : '🌙'}
-      </button>
-      <Board/>
+      <div className="top-controls">
+        <button className="control-btn" onClick={() => setIsMuted(!isMuted)}>
+          {isMuted ? '🔇' : '🔊'}
+        </button>
+        <button className="control-btn" onClick={toggleTheme}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+      </div>
+      <Board isMuted={isMuted}/>
     </div>
   );
 }
