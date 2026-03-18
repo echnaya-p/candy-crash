@@ -1,7 +1,9 @@
-export const SIZE_BOARD = 8;
-export const COLORS = ['red', 'yellow', 'green', 'blue', 'purple'];
+import { CandyColor, CellValue, IconPackKey, IconPack, CandyDisplayConfig } from '../types';
 
-export const ICON_PACKS = {
+export const SIZE_BOARD = 8;
+export const COLORS: CandyColor[] = ['red', 'yellow', 'green', 'blue', 'purple'];
+
+export const ICON_PACKS: Record<IconPackKey, IconPack> = {
     berries: {
         label: '🍓',
         emojis: { red: '🍓', yellow: '🍋', green: '🍏', blue: '🫐', purple: '🍇' },
@@ -24,7 +26,7 @@ export const ICON_PACKS = {
     },
 };
 
-export const CANDY_BG = {
+export const CANDY_BG: Record<CellValue, string> = {
     red:    'linear-gradient(135deg, rgba(255, 107, 107, 0.4), rgba(238, 90, 36, 0.3))',
     yellow: 'linear-gradient(135deg, rgba(255, 211, 42, 0.4), rgba(246, 185, 59, 0.3))',
     green:  'linear-gradient(135deg, rgba(123, 237, 159, 0.4), rgba(46, 213, 115, 0.3))',
@@ -33,12 +35,12 @@ export const CANDY_BG = {
     white:  'transparent',
 };
 
-export function getCandyConfig(iconPack) {
+export function getCandyConfig(iconPack: IconPackKey): Record<CellValue, CandyDisplayConfig> {
     const pack = ICON_PACKS[iconPack] || ICON_PACKS.berries;
-    const config = {};
+    const config: Partial<Record<CellValue, CandyDisplayConfig>> = {};
     for (const color of COLORS) {
         config[color] = { emoji: pack.emojis[color], bg: CANDY_BG[color] };
     }
     config.white = { emoji: '', bg: 'transparent' };
-    return config;
+    return config as Record<CellValue, CandyDisplayConfig>;
 }

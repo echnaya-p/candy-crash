@@ -1,30 +1,31 @@
 import Board from "./Board/Board";
-import {useState, useEffect, useRef} from "react";
-import {ICON_PACKS} from "./helpers/constants";
-import {LANGUAGES, t} from "./helpers/i18n";
+import { useState, useEffect, useRef } from "react";
+import { ICON_PACKS } from "./helpers/constants";
+import { LANGUAGES, t } from "./helpers/i18n";
+import { IconPackKey, LangKey, GameMode } from "./types";
 import './App.css';
 
 function App() {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [isMuted, setIsMuted] = useState(false);
-  const [iconPack, setIconPack] = useState('berries');
+  const [iconPack, setIconPack] = useState<IconPackKey>('berries');
   const [showIconMenu, setShowIconMenu] = useState(false);
-  const [gameMode, setGameMode] = useState(null);
-  const [lang, setLang] = useState('en');
+  const [gameMode, setGameMode] = useState<GameMode | null>(null);
+  const [lang, setLang] = useState<LangKey>('en');
   const [showLangMenu, setShowLangMenu] = useState(false);
-  const menuRef = useRef(null);
-  const langRef = useRef(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const langRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (menuRef.current && !menuRef.current.contains(e.target)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
         setShowIconMenu(false);
       }
-      if (langRef.current && !langRef.current.contains(e.target)) {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
         setShowLangMenu(false);
       }
     };
@@ -47,7 +48,7 @@ function App() {
         </button>
         {showIconMenu && (
           <div className="icon-menu">
-            {Object.entries(ICON_PACKS).map(([key, pack]) => (
+            {(Object.entries(ICON_PACKS) as [IconPackKey, typeof ICON_PACKS[IconPackKey]][]).map(([key, pack]) => (
               <button
                 key={key}
                 className={`icon-option${iconPack === key ? ' active' : ''}`}
@@ -65,7 +66,7 @@ function App() {
         </button>
         {showLangMenu && (
           <div className="icon-menu">
-            {Object.entries(LANGUAGES).map(([key, cfg]) => (
+            {(Object.entries(LANGUAGES) as [LangKey, typeof LANGUAGES[LangKey]][]).map(([key, cfg]) => (
               <button
                 key={key}
                 className={`icon-option${lang === key ? ' active' : ''}`}

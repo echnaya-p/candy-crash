@@ -1,10 +1,11 @@
-import {SIZE_BOARD} from "./constants";
-import {isLastIndex} from "./utils";
+import { BoardState } from '../types';
+import { SIZE_BOARD } from './constants';
+import { isLastIndex } from './utils';
 
-function horizontalCheck(candies) {
-    const combo = [];
+function horizontalCheck(candies: BoardState): number[] {
+    const combo: number[] = [];
 
-    const checkRow = (i) => {
+    const checkRow = (i: number): void => {
         if (isLastIndex(i + 1) || isLastIndex(i + 2)) {
             return;
         }
@@ -21,10 +22,10 @@ function horizontalCheck(candies) {
     return combo;
 }
 
-function verticalCheck(candies) {
-    const combo = [];
+function verticalCheck(candies: BoardState): number[] {
+    const combo: number[] = [];
 
-    const checkColumn = (i) => {
+    const checkColumn = (i: number): void => {
         if (candies[i] !== 'white' && (candies[i] === candies[i + SIZE_BOARD]) && (candies[i] === candies[i + 2 * SIZE_BOARD])) {
             combo.push(i, i + SIZE_BOARD, i + 2 * SIZE_BOARD);
         }
@@ -37,9 +38,8 @@ function verticalCheck(candies) {
     return combo;
 }
 
-
-function getNeighbors(index) {
-    const neighbors = [];
+function getNeighbors(index: number): number[] {
+    const neighbors: number[] = [];
     const row = Math.floor(index / SIZE_BOARD);
     const col = index % SIZE_BOARD;
 
@@ -51,12 +51,12 @@ function getNeighbors(index) {
     return neighbors;
 }
 
-function expandCombo(comboIndices, candies) {
-    const expanded = new Set(comboIndices);
-    const queue = [...comboIndices];
+function expandCombo(comboIndices: Set<number>, candies: BoardState): Set<number> {
+    const expanded = new Set(Array.from(comboIndices));
+    const queue = Array.from(comboIndices);
 
     while (queue.length) {
-        const current = queue.shift();
+        const current = queue.shift()!;
         const color = candies[current];
 
         for (const neighbor of getNeighbors(current)) {
@@ -70,7 +70,7 @@ function expandCombo(comboIndices, candies) {
     return expanded;
 }
 
-export function checkCombos(candies) {
+export function checkCombos(candies: BoardState): number[] {
     const baseCombo = new Set([...horizontalCheck(candies), ...verticalCheck(candies)]);
 
     if (baseCombo.size === 0) return [];

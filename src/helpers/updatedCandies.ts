@@ -1,9 +1,10 @@
-import {SIZE_BOARD} from "./constants";
-import {updateCandy} from "./utils";
+import { BoardState } from '../types';
+import { SIZE_BOARD } from './constants';
+import { updateCandy } from './utils';
 
-export function updateCandies(candies) {
-   let copy = [...candies]
-   const updatedCandies = [];
+export function updateCandies(candies: BoardState): BoardState {
+   let copy = [...candies];
+   const updatedCandies: BoardState = [];
 
    for (let i = SIZE_BOARD * SIZE_BOARD - 1; i >= 0; i--) {
        if (copy[i] === 'white') {
@@ -15,5 +16,5 @@ export function updateCandies(candies) {
        }
    }
 
-   return updatedCandies
+   return updatedCandies;
 }

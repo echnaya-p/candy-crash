@@ -1,26 +1,27 @@
-import {checkCombos} from "../helpers/checkCombos";
-import {useCallback, useEffect, useState, useRef} from "react";
-import {generateCandies, swapColors} from "../helpers/utils";
-import {updateCandies} from "../helpers/updatedCandies";
-import {getCandyConfig} from "../helpers/constants";
-import {playClick, playCombo, playError} from "../helpers/sounds";
-import {t} from "../helpers/i18n";
+import { checkCombos } from "../helpers/checkCombos";
+import { useCallback, useEffect, useState, useRef } from "react";
+import { generateCandies, swapColors } from "../helpers/utils";
+import { updateCandies } from "../helpers/updatedCandies";
+import { getCandyConfig } from "../helpers/constants";
+import { playClick, playCombo, playError } from "../helpers/sounds";
+import { t } from "../helpers/i18n";
+import { BoardProps, BoardState } from "../types";
 import './Board.css';
 
 const TIMER_DURATION = 30;
 
-function Board({ isMuted, iconPack, gameMode, lang, onExit }) {
+function Board({ isMuted, iconPack, gameMode, lang, onExit }: BoardProps) {
     const candyConfig = getCandyConfig(iconPack);
-    const [candies, setCandies] = useState(generateCandies());
+    const [candies, setCandies] = useState<BoardState>(generateCandies());
     const [isCheck, setIsCheck] = useState(false);
-    const [firstElementForSwap, setFirstElementForSwap] = useState(null);
-    const [secondElementForSwap, setSecondElementForSwap] = useState(null);
-    const [lastSwap, setLastSwap] = useState(null);
-    const [shakeIndices, setShakeIndices] = useState([]);
+    const [firstElementForSwap, setFirstElementForSwap] = useState<number | null>(null);
+    const [secondElementForSwap, setSecondElementForSwap] = useState<number | null>(null);
+    const [lastSwap, setLastSwap] = useState<[number, number] | null>(null);
+    const [shakeIndices, setShakeIndices] = useState<number[]>([]);
     const [score, setScore] = useState(0);
     const [timeLeft, setTimeLeft] = useState(TIMER_DURATION);
     const [gameOver, setGameOver] = useState(false);
-    const timerRef = useRef(null);
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
     useEffect(() => {
         if (gameMode !== 'timed') return;
@@ -28,7 +29,7 @@ function Board({ isMuted, iconPack, gameMode, lang, onExit }) {
         timerRef.current = setInterval(() => {
             setTimeLeft(prev => {
                 if (prev <= 1) {
-                    clearInterval(timerRef.current);
+                    clearInterval(timerRef.current!);
                     setGameOver(true);
                     return 0;
                 }
@@ -36,14 +37,16 @@ function Board({ isMuted, iconPack, gameMode, lang, onExit }) {
             });
         }, 1000);
 
-        return () => clearInterval(timerRef.current);
+        return () => {
+            if (timerRef.current) clearInterval(timerRef.current);
+        };
     }, [gameMode, gameOver]);
 
     const handleCheck = useCallback(() => {
         const combo = checkCombos(candies);
 
         if (combo.length) {
-           const showWhiteCandies = candies.map((candy, index) => combo.includes(index) ? 'white' : candy);
+           const showWhiteCandies: BoardState = candies.map((candy, index) => combo.includes(index) ? 'white' : candy);
 
            setCandies(showWhiteCandies);
            setScore(prev => prev + combo.length);
@@ -61,7 +64,7 @@ function Board({ isMuted, iconPack, gameMode, lang, onExit }) {
         }
     }, [candies, lastSwap, isMuted]);
 
-    const handleClick = (id) => {
+    const handleClick = (id: number): void => {
         if (gameOver) return;
         if (firstElementForSwap === id) {
             setFirstElementForSwap(null);
@@ -75,11 +78,11 @@ function Board({ isMuted, iconPack, gameMode, lang, onExit }) {
         }
     };
 
-    const isSelectedItem = (id) => {
+    const isSelectedItem = (id: number): boolean => {
         return firstElementForSwap === id || secondElementForSwap === id;
     };
 
-    const handleRestart = () => {
+    const handleRestart = (): void => {
         setCandies(generateCandies());
         setScore(0);
         setTimeLeft(TIMER_DURATION);

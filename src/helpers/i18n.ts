@@ -1,10 +1,12 @@
-export const LANGUAGES = {
+import { LangKey, TranslationKey, LanguageConfig } from '../types';
+
+export const LANGUAGES: Record<LangKey, LanguageConfig> = {
     en: { label: 'EN', flag: '🇬🇧' },
     ru: { label: 'RU', flag: '🇷🇺' },
     zh: { label: 'ZH', flag: '🇨🇳' },
 };
 
-const translations = {
+const translations: Record<LangKey, Record<TranslationKey, string>> = {
     en: {
         title: 'Candy Crash',
         chooseMode: 'Choose game mode',
@@ -43,6 +45,6 @@ const translations = {
     },
 };
 
-export function t(lang, key) {
+export function t(lang: LangKey, key: TranslationKey): string {
     return translations[lang]?.[key] || translations.en[key] || key;
 }
