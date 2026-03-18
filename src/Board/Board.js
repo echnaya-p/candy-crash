@@ -47,7 +47,7 @@ function Board() {
     useEffect(() => {
         if (isCheck) return;
 
-        const timer = setTimeout(() => handleCheck(), 1000);
+        const timer = setTimeout(() => handleCheck(), 300);
 
         return () => clearTimeout(timer);
     }, [isCheck, handleCheck]);
@@ -60,7 +60,7 @@ function Board() {
 
             setCandies(newCandies);
             setIsCheck(false);
-        }, 1000);
+        }, 300);
 
         return () => clearTimeout(timer);
     }, [candies, isCheck]);
