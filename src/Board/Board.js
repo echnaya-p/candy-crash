@@ -125,6 +125,7 @@ function Board({ isMuted, iconPack, gameMode, onExit }) {
         <div className="board-wrapper">
             <div className="board-title">Candy Crash</div>
             <div className="board-info">
+                <button className="board-back" onClick={onExit}>←</button>
                 <div className="board-score">Score: {score}</div>
                 {gameMode === 'timed' && (
                     <div className={`board-timer${timeLeft <= 10 ? ' warning' : ''}`}>

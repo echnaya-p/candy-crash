@@ -23,6 +23,25 @@
     margin-bottom: 20px;
 }
 
+.board-back {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    padding: 6px 14px;
+    background: var(--score-bg);
+    border-radius: 20px;
+    border: 1px solid var(--score-border);
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.board-back:hover {
+    background: var(--toggle-hover);
+    transform: scale(1.05);
+}
+
 .board-score {
     font-family: 'Segoe UI', sans-serif;
     font-size: 20px;
