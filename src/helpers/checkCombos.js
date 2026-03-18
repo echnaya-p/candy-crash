@@ -38,8 +38,44 @@ function verticalCheck(candies) {
 }
 
 
-export function checkCombos(candies) {
-    const comboIndices = new Set([...horizontalCheck(candies), ...verticalCheck(candies)]);
+function getNeighbors(index) {
+    const neighbors = [];
+    const row = Math.floor(index / SIZE_BOARD);
+    const col = index % SIZE_BOARD;
 
-    return Array.from(comboIndices);
+    if (row > 0) neighbors.push(index - SIZE_BOARD);
+    if (row < SIZE_BOARD - 1) neighbors.push(index + SIZE_BOARD);
+    if (col > 0) neighbors.push(index - 1);
+    if (col < SIZE_BOARD - 1) neighbors.push(index + 1);
+
+    return neighbors;
+}
+
+function expandCombo(comboIndices, candies) {
+    const expanded = new Set(comboIndices);
+    const queue = [...comboIndices];
+
+    while (queue.length) {
+        const current = queue.shift();
+        const color = candies[current];
+
+        for (const neighbor of getNeighbors(current)) {
+            if (!expanded.has(neighbor) && candies[neighbor] === color) {
+                expanded.add(neighbor);
+                queue.push(neighbor);
+            }
+        }
+    }
+
+    return expanded;
+}
+
+export function checkCombos(candies) {
+    const baseCombo = new Set([...horizontalCheck(candies), ...verticalCheck(candies)]);
+
+    if (baseCombo.size === 0) return [];
+
+    const expanded = expandCombo(baseCombo, candies);
+
+    return Array.from(expanded);
 }
