@@ -4,11 +4,12 @@ import {generateCandies, swapColors} from "../helpers/utils";
 import {updateCandies} from "../helpers/updatedCandies";
 import {getCandyConfig} from "../helpers/constants";
 import {playClick, playCombo, playError} from "../helpers/sounds";
+import {t} from "../helpers/i18n";
 import './Board.css';
 
 const TIMER_DURATION = 30;
 
-function Board({ isMuted, iconPack, gameMode, onExit }) {
+function Board({ isMuted, iconPack, gameMode, lang, onExit }) {
     const candyConfig = getCandyConfig(iconPack);
     const [candies, setCandies] = useState(generateCandies());
     const [isCheck, setIsCheck] = useState(false);
@@ -123,10 +124,10 @@ function Board({ isMuted, iconPack, gameMode, onExit }) {
 
     return (
         <div className="board-wrapper">
-            <div className="board-title">Candy Crash</div>
+            <div className="board-title">{t(lang, 'title')}</div>
             <div className="board-info">
                 <button className="board-back" onClick={onExit}>←</button>
-                <div className="board-score">Score: {score}</div>
+                <div className="board-score">{t(lang, 'score')}: {score}</div>
                 {gameMode === 'timed' && (
                     <div className={`board-timer${timeLeft <= 10 ? ' warning' : ''}`}>
                         {timeLeft}s
@@ -153,14 +154,14 @@ function Board({ isMuted, iconPack, gameMode, onExit }) {
                 </div>
                 {gameOver && (
                     <div className="game-over-overlay">
-                        <div className="game-over-title">Time's up!</div>
-                        <div className="game-over-score">Score: {score}</div>
+                        <div className="game-over-title">{t(lang, 'timesUp')}</div>
+                        <div className="game-over-score">{t(lang, 'score')}: {score}</div>
                         <div className="game-over-buttons">
                             <button className="game-over-btn" onClick={handleRestart}>
-                                Play Again
+                                {t(lang, 'playAgain')}
                             </button>
                             <button className="game-over-btn secondary" onClick={onExit}>
-                                Menu
+                                {t(lang, 'menu')}
                             </button>
                         </div>
                     </div>

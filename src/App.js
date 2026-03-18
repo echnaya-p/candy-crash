@@ -1,6 +1,7 @@
 import Board from "./Board/Board";
 import {useState, useEffect, useRef} from "react";
 import {ICON_PACKS} from "./helpers/constants";
+import {LANGUAGES, t} from "./helpers/i18n";
 import './App.css';
 
 function App() {
@@ -9,7 +10,10 @@ function App() {
   const [iconPack, setIconPack] = useState('berries');
   const [showIconMenu, setShowIconMenu] = useState(false);
   const [gameMode, setGameMode] = useState(null);
+  const [lang, setLang] = useState('en');
+  const [showLangMenu, setShowLangMenu] = useState(false);
   const menuRef = useRef(null);
+  const langRef = useRef(null);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -20,6 +24,9 @@ function App() {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
         setShowIconMenu(false);
       }
+      if (langRef.current && !langRef.current.contains(e.target)) {
+        setShowLangMenu(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -29,48 +36,70 @@ function App() {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
+  const topControls = (
+    <div className="top-controls">
+      <button className="control-btn" onClick={() => setIsMuted(!isMuted)}>
+        {isMuted ? '🔇' : '🔊'}
+      </button>
+      <div className="icon-picker" ref={menuRef}>
+        <button className="control-btn" onClick={() => setShowIconMenu(!showIconMenu)}>
+          {ICON_PACKS[iconPack].label}
+        </button>
+        {showIconMenu && (
+          <div className="icon-menu">
+            {Object.entries(ICON_PACKS).map(([key, pack]) => (
+              <button
+                key={key}
+                className={`icon-option${iconPack === key ? ' active' : ''}`}
+                onClick={() => { setIconPack(key); setShowIconMenu(false); }}
+              >
+                {pack.label}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="icon-picker" ref={langRef}>
+        <button className="control-btn" onClick={() => setShowLangMenu(!showLangMenu)}>
+          {LANGUAGES[lang].flag}
+        </button>
+        {showLangMenu && (
+          <div className="icon-menu">
+            {Object.entries(LANGUAGES).map(([key, cfg]) => (
+              <button
+                key={key}
+                className={`icon-option${lang === key ? ' active' : ''}`}
+                onClick={() => { setLang(key); setShowLangMenu(false); }}
+              >
+                {cfg.flag}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+      <button className="control-btn" onClick={toggleTheme}>
+        {theme === 'dark' ? '☀️' : '🌙'}
+      </button>
+    </div>
+  );
+
   if (!gameMode) {
     return (
       <div className="App">
-        <div className="top-controls">
-          <button className="control-btn" onClick={() => setIsMuted(!isMuted)}>
-            {isMuted ? '🔇' : '🔊'}
-          </button>
-          <div className="icon-picker" ref={menuRef}>
-            <button className="control-btn" onClick={() => setShowIconMenu(!showIconMenu)}>
-              {ICON_PACKS[iconPack].label}
-            </button>
-            {showIconMenu && (
-              <div className="icon-menu">
-                {Object.entries(ICON_PACKS).map(([key, pack]) => (
-                  <button
-                    key={key}
-                    className={`icon-option${iconPack === key ? ' active' : ''}`}
-                    onClick={() => { setIconPack(key); setShowIconMenu(false); }}
-                  >
-                    {pack.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          <button className="control-btn" onClick={toggleTheme}>
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
-        </div>
+        {topControls}
         <div className="mode-select">
-          <div className="board-title">Candy Crash</div>
-          <div className="mode-subtitle">Choose game mode</div>
+          <div className="board-title">{t(lang, 'title')}</div>
+          <div className="mode-subtitle">{t(lang, 'chooseMode')}</div>
           <div className="mode-buttons">
             <button className="mode-btn" onClick={() => setGameMode('lite')}>
               <span className="mode-icon">✨</span>
-              <span className="mode-name">Lite</span>
-              <span className="mode-desc">Play at your own pace</span>
+              <span className="mode-name">{t(lang, 'lite')}</span>
+              <span className="mode-desc">{t(lang, 'liteDesc')}</span>
             </button>
             <button className="mode-btn" onClick={() => setGameMode('timed')}>
               <span className="mode-icon">⏱️</span>
-              <span className="mode-name">Timed</span>
-              <span className="mode-desc">30 seconds challenge</span>
+              <span className="mode-name">{t(lang, 'timed')}</span>
+              <span className="mode-desc">{t(lang, 'timedDesc')}</span>
             </button>
           </div>
         </div>
@@ -80,36 +109,12 @@ function App() {
 
   return (
     <div className="App">
-      <div className="top-controls">
-        <button className="control-btn" onClick={() => setIsMuted(!isMuted)}>
-          {isMuted ? '🔇' : '🔊'}
-        </button>
-        <div className="icon-picker" ref={menuRef}>
-          <button className="control-btn" onClick={() => setShowIconMenu(!showIconMenu)}>
-            {ICON_PACKS[iconPack].label}
-          </button>
-          {showIconMenu && (
-            <div className="icon-menu">
-              {Object.entries(ICON_PACKS).map(([key, pack]) => (
-                <button
-                  key={key}
-                  className={`icon-option${iconPack === key ? ' active' : ''}`}
-                  onClick={() => { setIconPack(key); setShowIconMenu(false); }}
-                >
-                  {pack.label}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-        <button className="control-btn" onClick={toggleTheme}>
-          {theme === 'dark' ? '☀️' : '🌙'}
-        </button>
-      </div>
+      {topControls}
       <Board
         isMuted={isMuted}
         iconPack={iconPack}
         gameMode={gameMode}
+        lang={lang}
         onExit={() => setGameMode(null)}
       />
     </div>
