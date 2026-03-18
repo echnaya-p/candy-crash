@@ -16,19 +16,53 @@
     transition: color 0.4s ease;
 }
 
+.board-info {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
 .board-score {
     font-family: 'Segoe UI', sans-serif;
     font-size: 20px;
     font-weight: 600;
     color: var(--text-secondary);
     letter-spacing: 1px;
-    margin-bottom: 20px;
     padding: 6px 20px;
     background: var(--score-bg);
     border-radius: 20px;
     border: 1px solid var(--score-border);
     backdrop-filter: blur(10px);
     transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+}
+
+.board-timer {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    padding: 6px 16px;
+    background: var(--score-bg);
+    border-radius: 20px;
+    border: 1px solid var(--score-border);
+    backdrop-filter: blur(10px);
+    transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+.board-timer.warning {
+    color: #ff6b6b;
+    border-color: rgba(255, 107, 107, 0.4);
+    animation: timer-pulse 1s ease-in-out infinite;
+}
+
+@keyframes timer-pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.board-grid-container {
+    position: relative;
 }
 
 .board-grid {
@@ -122,5 +156,83 @@
     100% {
         transform: scale(0);
         opacity: 0;
+    }
+}
+
+.board-grid.disabled {
+    pointer-events: none;
+}
+
+.game-over-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    border-radius: 20px;
+    z-index: 10;
+    animation: menu-appear 0.3s ease-out;
+}
+
+.game-over-title {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 32px;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.game-over-score {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.game-over-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.game-over-btn {
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.game-over-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+}
+
+.game-over-btn.secondary {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.game-over-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+@keyframes menu-appear {
+    0% {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
