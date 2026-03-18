@@ -118,3 +118,57 @@ body::before {
     background: var(--toggle-hover);
     transform: scale(1.1);
 }
+
+.icon-picker {
+    position: relative;
+}
+
+.icon-menu {
+    position: absolute;
+    top: 52px;
+    right: 0;
+    display: flex;
+    gap: 6px;
+    padding: 8px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 14px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    animation: menu-appear 0.2s ease-out;
+}
+
+.icon-option {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid var(--cell-border);
+    background: var(--toggle-bg);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.icon-option:hover {
+    background: var(--toggle-hover);
+    transform: scale(1.1);
+}
+
+.icon-option.active {
+    background: var(--toggle-hover);
+    box-shadow: 0 0 0 2px var(--selected-glow);
+}
+
+@keyframes menu-appear {
+    0% {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

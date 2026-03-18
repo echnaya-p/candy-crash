@@ -2,11 +2,12 @@ import {checkCombos} from "../helpers/checkCombos";
 import {useCallback, useEffect, useState} from "react";
 import {generateCandies, swapColors} from "../helpers/utils";
 import {updateCandies} from "../helpers/updatedCandies";
-import {CANDY_CONFIG} from "../helpers/constants";
+import {getCandyConfig} from "../helpers/constants";
 import {playClick, playCombo, playError} from "../helpers/sounds";
 import './Board.css';
 
-function Board({ isMuted }) {
+function Board({ isMuted, iconPack }) {
+    const candyConfig = getCandyConfig(iconPack);
     const [candies, setCandies] = useState(generateCandies());
     const [isCheck, setIsCheck] = useState(false);
     const [firstElementForSwap, setFirstElementForSwap] = useState(null);
@@ -91,7 +92,7 @@ function Board({ isMuted }) {
             <div className="board-score">Score: {score}</div>
             <div className="board-grid">
                 {candies.map((color, index) => {
-                    const config = CANDY_CONFIG[color] || CANDY_CONFIG.white;
+                    const config = candyConfig[color] || candyConfig.white;
                     const isEmpty = color === 'white';
 
                     return (
