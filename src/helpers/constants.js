@@ -2,10 +2,10 @@ export const SIZE_BOARD = 8;
 export const COLORS = ['red', 'yellow', 'green', 'blue', 'purple'];
 
 export const CANDY_CONFIG = {
-    red:    { emoji: '🍓', bg: 'linear-gradient(135deg, #ff6b6b, #ee5a24)' },
-    yellow: { emoji: '🍋', bg: 'linear-gradient(135deg, #ffd32a, #f6b93b)' },
-    green:  { emoji: '🍏', bg: 'linear-gradient(135deg, #7bed9f, #2ed573)' },
-    blue:   { emoji: '🫐', bg: 'linear-gradient(135deg, #70a1ff, #1e90ff)' },
-    purple: { emoji: '🍇', bg: 'linear-gradient(135deg, #a29bfe, #6c5ce7)' },
+    red:    { emoji: '🍓', bg: 'linear-gradient(135deg, rgba(255, 107, 107, 0.4), rgba(238, 90, 36, 0.3))' },
+    yellow: { emoji: '🍋', bg: 'linear-gradient(135deg, rgba(255, 211, 42, 0.4), rgba(246, 185, 59, 0.3))' },
+    green:  { emoji: '🍏', bg: 'linear-gradient(135deg, rgba(123, 237, 159, 0.4), rgba(46, 213, 115, 0.3))' },
+    blue:   { emoji: '🫐', bg: 'linear-gradient(135deg, rgba(112, 161, 255, 0.4), rgba(30, 144, 255, 0.3))' },
+    purple: { emoji: '🍇', bg: 'linear-gradient(135deg, rgba(162, 155, 254, 0.4), rgba(108, 92, 231, 0.3))' },
     white:  { emoji: '',   bg: 'transparent' },
 };
