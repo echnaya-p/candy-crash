@@ -10,6 +10,8 @@ function Board() {
     const [isCheck, setIsCheck] = useState(false);
     const [firstElementForSwap, setFirstElementForSwap] = useState(null);
     const [secondElementForSwap, setSecondElementForSwap] = useState(null);
+    const [lastSwap, setLastSwap] = useState(null);
+    const [shakeIndices, setShakeIndices] = useState([]);
 
     const handleCheck = useCallback(() => {
         const combo = checkCombos(candies);
@@ -19,8 +21,16 @@ function Board() {
 
            setCandies(showWhiteCandies);
            setIsCheck(true);
+           setLastSwap(null);
+        } else if (lastSwap) {
+           setShakeIndices([lastSwap[0], lastSwap[1]]);
+           setTimeout(() => {
+               setCandies(swapColors(candies, lastSwap[0], lastSwap[1]));
+               setShakeIndices([]);
+               setLastSwap(null);
+           }, 400);
         }
-    }, [candies]);
+    }, [candies, lastSwap]);
 
     const handleClick = (id) => {
         if (firstElementForSwap !== null) {
@@ -38,7 +48,7 @@ function Board() {
         if (firstElementForSwap !== null && secondElementForSwap !== null) {
             const updatedCandies = swapColors(candies, firstElementForSwap, secondElementForSwap);
             setCandies(updatedCandies);
-            setIsCheck(true);
+            setLastSwap([firstElementForSwap, secondElementForSwap]);
             setFirstElementForSwap(null);
             setSecondElementForSwap(null);
         }
@@ -76,7 +86,7 @@ function Board() {
                     return (
                         <div
                             key={index}
-                            className={`candy-cell${isSelectedItem(index) ? ' selected' : ''}${isEmpty ? ' empty' : ''}`}
+                            className={`candy-cell${isSelectedItem(index) ? ' selected' : ''}${isEmpty ? ' empty' : ''}${shakeIndices.includes(index) ? ' shake' : ''}`}
                             style={{background: config.bg}}
                             onClick={() => handleClick(index)}
                         >
